@@ -12,10 +12,99 @@
 <div class="w3-row-padding w3-content" style="max-width:1400px">
   <div class="w3-twothird">
     <img src="arduino.jpg" alt="Notebook" style="width:100%">
-    <h2>Do you understand this diagram?</h2>
-    <div class="w3-justify">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </div>
+    <h3>Introduction to Arduino and Simple LED Circuits</h3>
+<p><strong>Arduino</strong> is an open-source electronics platform based on easy-to-use hardware and software. It&apos;s designed for both beginners and experienced hobbyists to create interactive electronic projects. The heart of an Arduino is its microcontroller, which can be programmed to control various electronic components, such as LEDs, motors, and sensors.</p>
+<h4>Components Needed:</h4>
+<ol>
+    <li><strong>Arduino Board</strong> (e.g., Arduino Uno)</li>
+    <li><strong>LEDs</strong> (Light Emitting Diodes)</li>
+    <li><strong>Potentiometer</strong> (for manual control)</li>
+    <li><strong>Resistors</strong> (typically 220&Omega; or 330&Omega; for LEDs)</li>
+    <li><strong>Breadboard and Jumper Wires</strong></li>
+</ol>
+<h3>Simple LED Circuits with Arduino</h3>
+<h4><strong>1. Basic LED Circuit with Arduino</strong></h4>
+<p><strong>Objective:</strong> Control an LED using a potentiometer and pre-programmed patterns.</p>
+<p><strong>Connections:</strong></p>
+<ol>
+    <li>
+        <p><strong>LED Setup:</strong></p>
+        <ul>
+            <li>Connect the <strong>anode</strong> (longer leg) of the LED to a digital pin on the Arduino (e.g., pin 9).</li>
+            <li>Connect the <strong>cathode</strong> (shorter leg) to one end of a resistor (220&Omega; or 330&Omega;), and connect the other end of the resistor to the GND (ground) pin on the Arduino.</li>
+        </ul>
+    </li>
+    <li>
+        <p><strong>Potentiometer Setup:</strong></p>
+        <ul>
+            <li>Connect one outer pin of the potentiometer to the 5V pin on the Arduino.</li>
+            <li>Connect the other outer pin to GND.</li>
+            <li>Connect the middle pin (wiper) of the potentiometer to an analog input pin on the Arduino (e.g., A0).</li>
+        </ul>
+    </li>
+</ol>
+<p><strong>Code Example:</strong></p>
+<pre><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium"><div class="flex items-center relative text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md">cpp<div class="flex items-center"><span data-state="closed"><button class="flex gap-1 items-center"><svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-cpp"><span class="hljs-comment">// Pin definitions</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> ledPin = <span class="hljs-number">9</span>;  <span class="hljs-comment">// LED connected to digital pin 9</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> potPin = A0; <span class="hljs-comment">// Potentiometer connected to analog pin A0</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-built_in">pinMode</span>(ledPin, OUTPUT); <span class="hljs-comment">// Set the LED pin as output</span>
+  Serial.<span class="hljs-built_in">begin</span>(<span class="hljs-number">9600</span>);      <span class="hljs-comment">// Initialize serial communication</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">int</span> potValue = <span class="hljs-built_in">analogRead</span>(potPin);  <span class="hljs-comment">// Read the potentiometer value (0-1023)</span>
+  <span class="hljs-type">int</span> ledBrightness = <span class="hljs-built_in">map</span>(potValue, <span class="hljs-number">0</span>, <span class="hljs-number">1023</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>); <span class="hljs-comment">// Map to LED brightness (0-255)</span>
+  
+  <span class="hljs-built_in">analogWrite</span>(ledPin, ledBrightness); <span class="hljs-comment">// Set LED brightness</span>
+  
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Potentiometer Value: &quot;</span>);
+  Serial.<span class="hljs-built_in">print</span>(potValue);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; | LED Brightness: &quot;</span>);
+  Serial.<span class="hljs-built_in">println</span>(ledBrightness);
+
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">10</span>); <span class="hljs-comment">// Small delay for stability</span>
+}
+</code></div></div></pre>
+<p><strong>Explanation:</strong></p>
+<ul>
+    <li>The <strong><code>analogRead(potPin)</code></strong> function reads the potentiometer&apos;s value (0-1023).</li>
+    <li><strong><code>map(potValue, 0, 1023, 0, 255)</code></strong> converts this value to a range suitable for LED brightness.</li>
+    <li><strong><code>analogWrite(ledPin, ledBrightness)</code></strong> adjusts the LED&apos;s brightness according to the potentiometer position.</li>
+</ul>
+<h4><strong>2. Pre-Programmed LED Patterns</strong></h4>
+<p><strong>Objective:</strong> Program the Arduino to control the LED with predefined patterns.</p>
+<p><strong>Code Example:</strong></p>
+<pre><div class="dark bg-gray-950 contain-inline-size rounded-md border-[0.5px] border-token-border-medium"><div class="flex items-center relative text-token-text-secondary bg-token-main-surface-secondary px-4 py-2 text-xs font-sans justify-between rounded-t-md">cpp<div class="flex items-center"><span data-state="closed"><button class="flex gap-1 items-center"><svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-sm"><path fill-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path></svg>Copy code</button></span></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="!whitespace-pre hljs language-cpp"><span class="hljs-type">const</span> <span class="hljs-type">int</span> ledPin = <span class="hljs-number">9</span>; <span class="hljs-comment">// LED connected to digital pin 9</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-built_in">pinMode</span>(ledPin, OUTPUT); <span class="hljs-comment">// Set the LED pin as output</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// Blink pattern 1: 1 second on, 1 second off</span>
+  <span class="hljs-built_in">digitalWrite</span>(ledPin, HIGH); <span class="hljs-comment">// Turn LED on</span>
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);                <span class="hljs-comment">// Wait for 1 second</span>
+  <span class="hljs-built_in">digitalWrite</span>(ledPin, LOW);  <span class="hljs-comment">// Turn LED off</span>
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);                <span class="hljs-comment">// Wait for 1 second</span>
+
+  <span class="hljs-comment">// Blink pattern 2: Fast blinking</span>
+  <span class="hljs-built_in">digitalWrite</span>(ledPin, HIGH); <span class="hljs-comment">// Turn LED on</span>
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">200</span>);                 <span class="hljs-comment">// Wait for 200 milliseconds</span>
+  <span class="hljs-built_in">digitalWrite</span>(ledPin, LOW);  <span class="hljs-comment">// Turn LED off</span>
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">200</span>);                 <span class="hljs-comment">// Wait for 200 milliseconds</span>
+}
+</code></div></div></pre>
+<p><strong>Explanation:</strong></p>
+<ul>
+    <li><strong><code>digitalWrite(ledPin, HIGH)</code></strong> turns the LED on.</li>
+    <li><strong><code>digitalWrite(ledPin, LOW)</code></strong> turns the LED off.</li>
+    <li><strong><code>delay(1000)</code></strong> pauses the program for 1 second.</li>
+    <li>The loop cycles through predefined blinking patterns, making the LED blink in a regular pattern.</li>
+</ul>
+<h3>Conclusion</h3>
+<p>With an Arduino, you can easily create circuits and control components like LEDs using both manual and pre-programmed methods. The potentiometer allows real-time control of LED brightness, while pre-programmed patterns provide automated visual effects. This flexibility makes Arduino an excellent tool for experimenting with electronics and programming.</p>
     
    <video width="320" height="240" controls>
     <source src="vid1.mp4" type="video/mp4">
